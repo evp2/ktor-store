@@ -17,7 +17,7 @@ fun Application.configureAuthentication() {
             userParamName = "username"
             passwordParamName = "password"
             validate { credentials ->
-                if (credentials.name == "admin" && credentials.password == "password") {
+                if (credentials.name == "admin" && credentials.password == "pw") {
                     UserIdPrincipal(credentials.name)
                 } else {
                     null
