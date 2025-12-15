@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ktor Store</title>
+    <script type="application/javascript">
+        function fetchAndDisplayProducts() {
+            fetchTasks()
+                .then(tasks => displayProducts(tasks))
+                .finally(() => {
+                    document.getElementById('loadProducts').toggleAttribute('disabled');
+                });
+        }
+
+        function fetchTasks() {
+            return fetch(
+                "/products",
+                {
+                    headers: { 'Accept': 'application/json' }
+                }
+            ).then(resp => resp.json());
+        }
+
+        function displayProducts(products) {
+            const productsTableBody = document.getElementById("productsTableBody")
+            products.forEach(task => {
+                const newRow = productRow(task);
+                productsTableBody.appendChild(newRow);
+            });
+        }
+
+        function productRow(product) {
+            return tr([
+                td(product.upc),
+                td(product.name),
+                td(product.price),
+                td(product.description)
+            ]);
+        }
+
+        function tr(children) {
+            const node = document.createElement("tr");
+            children.forEach(child => node.appendChild(child));
+            return node;
+        }
+
+        function td(text) {
+            const node = document.createElement("td");
+            node.appendChild(document.createTextNode(text));
+            return node;
+        }
+    </script>
+    <style>
+        /* Modern, minimalist reset */
+        *, *::before, *::after { box-sizing: border-box; }
+        html, body { height: 100%; }
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+            color: #0f172a; /* slate-900 */
+            background: #f8fafc; /* slate-50 */
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 40px 20px 64px;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .title {
+            font-size: clamp(28px, 4vw, 40px);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin: 0;
+        }
+
+        .actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        button, input[type="submit"] {
+            appearance: none;
+            border: none;
+            background: #0f172a; /* slate-900 */
+            color: white;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease;
+            box-shadow: 0 6px 14px -6px rgba(15, 23, 42, 0.35);
+        }
+        button:hover, input[type="submit"]:hover { background: #111827; }
+        button:active, input[type="submit"]:active { transform: translateY(1px); }
+        input[type="submit"][disabled] { opacity: 0.5; cursor: not-allowed; }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 8px 8px 16px;
+            box-shadow: 0 10px 30px -12px rgba(2, 6, 23, 0.2);
+            overflow: hidden;
+        }
+
+        .table-wrap { width: 100%; overflow-x: auto; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 560px;
+        }
+        thead th {
+            text-align: left;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #475569; /* slate-600 */
+            padding: 14px 16px;
+            border-bottom: 1px solid #e2e8f0; /* slate-200 */
+            background: linear-gradient(#ffffff, #fbfdff);
+        }
+        tbody td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #f1f5f9; /* slate-100 */
+        }
+        tbody tr:hover { background: #f8fafc; }
+        tbody tr:last-child td { border-bottom: none; }
+
+        .muted { color: #64748b; }
+
+        footer { margin-top: 32px; color: #94a3b8; font-size: 12px; text-align: center; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1 class="title">Ktor Store</h1>
+        <div class="actions">
+            <form action="javascript:fetchAndDisplayProducts()">
+                <input id="loadProducts" type="submit" value="View Products" />
+            </form>
+        </div>
+    </header>
+
+    <section class="card">
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>UPC</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody id="productsTableBody"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <footer>
+        <span class="muted">Powered by Ktor</span>
+    </footer>
+</div>
+</body>
+</html>

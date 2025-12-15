@@ -1,0 +1,10 @@
+ktor:
+  application:
+    modules:
+      - com.github.evp2.ApplicationKt.module
+  development: true
+  deployment:
+    port: 8080
+    watch:
+      - classes
+      - resources
