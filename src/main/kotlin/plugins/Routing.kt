@@ -50,11 +50,16 @@ fun Application.configureRouting() {
                 }
             }
         }
+        get("/logout") {
+            call.sessions.clear<Session>()
+            call.respondRedirect("/login")
+        }
         get("/products") {
             call.respond(ProductDatabase.dao.products())
         }
-        get("/products") {
-            val upc = call.request.queryParameters["upc"]?.toInt()
+        get("/products/{id}") {
+            val id = call.parameters["id"]
+            val upc = id?.toInt()
 
             if (upc == null) {
                 call.respondText("Missing upc", status = HttpStatusCode.BadRequest)
@@ -65,10 +70,6 @@ fun Application.configureRouting() {
                 null -> call.respond(HttpStatusCode.BadRequest)
                 else -> call.respond(product)
             }
-        }
-        get("/logout") {
-            call.sessions.clear<Session>()
-            call.respondRedirect("/login")
         }
         authenticate("auth-form") {
             post("/login") {
