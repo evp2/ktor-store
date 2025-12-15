@@ -26,15 +26,6 @@ class ProductDAO {
         }
     }
 
-    suspend fun addProducts(products: List<Product>): List<Product>? {
-        return query {
-            products.forEach { product ->
-                addProduct(product)
-            }
-            products
-        }
-    }
-
     suspend fun addProduct(product: Product): Product? {
         return query {
             val insertedProduct = ProductTable.insert { table ->
@@ -45,6 +36,15 @@ class ProductDAO {
             }
 
             insertedProduct.resultedValues?.singleOrNull()?.toProduct()
+        }
+    }
+
+    suspend fun addProducts(products: List<Product>): List<Product>? {
+        return query {
+            products.forEach { product ->
+                addProduct(product)
+            }
+            products
         }
     }
 
