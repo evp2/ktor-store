@@ -10,7 +10,9 @@ import io.ktor.server.auth.authenticate
 import io.ktor.server.auth.principal
 import io.ktor.server.html.respondHtml
 import io.ktor.server.http.content.staticResources
+import io.ktor.server.plugins.origin
 import io.ktor.server.request.receive
+import io.ktor.server.request.userAgent
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.clear
@@ -29,7 +31,11 @@ fun Application.configureRouting() {
     routing {
         staticResources("store", "store")
         get("/") {
-            call.respond(mapOf("hello" to "world"))
+            val userSession = call.principal<Session>()
+            if (userSession != null) {
+                call.sessions.set(userSession.copy(count = userSession.count + 1))
+            }
+            call.respondRedirect("/store")
         }
         get("/login") {
             call.respondHtml {
@@ -54,10 +60,10 @@ fun Application.configureRouting() {
             call.sessions.clear<Session>()
             call.respondRedirect("/login")
         }
-        get("/products") {
+        get("/api/products") {
             call.respond(ProductDatabase.dao.products())
         }
-        get("/products/{id}") {
+        get("/api/products/{id}") {
             val id = call.parameters["id"]
             val upc = id?.toInt()
 
@@ -74,7 +80,9 @@ fun Application.configureRouting() {
         authenticate("auth-form") {
             post("/login") {
                 val userName = call.principal<UserIdPrincipal>()?.name.toString()
-                call.sessions.set(Session(name = userName, count = 1))
+                val remoteIp = call.request.origin.toString()
+                val userAgent = call.request.userAgent().toString()
+                call.sessions.set(Session(name = userName, count = 1, remoteIp, userAgent))
                 call.respondRedirect("/welcome")
             }
         }

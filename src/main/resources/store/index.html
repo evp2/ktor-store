@@ -15,7 +15,7 @@
 
         function fetchTasks() {
             return fetch(
-                "/products",
+                "/api/products",
                 {
                     headers: { 'Accept': 'application/json' }
                 }
@@ -52,7 +52,6 @@
         }
     </script>
     <style>
-        /* Modern, minimalist reset */
         *, *::before, *::after { box-sizing: border-box; }
         html, body { height: 100%; }
         body {
