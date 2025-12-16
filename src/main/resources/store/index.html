@@ -89,6 +89,20 @@
             gap: 12px;
         }
 
+        #authenticate {
+            appearance: none;
+            border: none;
+            background: white;
+            color: #0f172a; /* slate-900 */
+            text-decoration: none;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease;
+            box-shadow: 0 6px 14px -6px rgba(15, 23, 42, 0.35);
+        }
+
         button, input[type="submit"] {
             appearance: none;
             border: none;
@@ -150,6 +164,7 @@
             <form action="javascript:fetchAndDisplayProducts()">
                 <input id="loadProducts" type="submit" value="View Products" />
             </form>
+            <a id="authenticate" href="/login">Login</a>
         </div>
     </header>
 
