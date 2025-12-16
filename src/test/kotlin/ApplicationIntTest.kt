@@ -79,14 +79,21 @@ class ApplicationIntTest {
     }
 
     @Test
-    fun `POST login invalid credentials yields 401`() = testApplication {
+    fun `POST login invalid credentials shows error on form`() = testApplication {
         configureTestApp()
 
-        val response = client.post("/login") {
+        val noRedirect = noRedirectClient()
+        val response = noRedirect.post("/login") {
             header(HttpHeaders.ContentType, ContentType.Application.FormUrlEncoded.toString())
             setBody(listOf("username" to "admin", "password" to "wrong").formUrlEncode())
         }
-        assertEquals(HttpStatusCode.Unauthorized, response.status)
+        assertEquals(HttpStatusCode.Found, response.status)
+        assertEquals("/login?error=1", response.headers[HttpHeaders.Location])
+
+        // Follow the redirect and ensure the error is displayed on the form
+        val errorPage = client.get("/login?error=1")
+        assertEquals(HttpStatusCode.OK, errorPage.status)
+        assertContains(errorPage.bodyAsText(), "Invalid username or password")
     }
 
     @Test
