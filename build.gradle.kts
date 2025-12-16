@@ -28,19 +28,17 @@ dependencies {
     implementation("io.ktor:ktor-server-content-negotiation")
     implementation("io.ktor:ktor-serialization-kotlinx-json")
     implementation("io.ktor:ktor-server-netty")
+    implementation("io.ktor:ktor-server-auth:${ktor_version}")
     implementation("io.ktor:ktor-server-config-yaml")
-    implementation("ch.qos.logback:logback-classic:$logback_version")
     implementation("io.ktor:ktor-server-html-builder:${ktor_version}")
-    implementation("org.jetbrains.kotlin-wrappers:kotlin-css:${kotlin_css_version}")
+    implementation("io.ktor:ktor-server-sessions:${ktor_version}")
+    implementation("ch.qos.logback:logback-classic:$logback_version")
 
+    implementation("org.jetbrains.kotlin-wrappers:kotlin-css:${kotlin_css_version}")
     implementation("org.jetbrains.exposed:exposed-core:${exposed_version}")
     implementation("org.jetbrains.exposed:exposed-dao:${exposed_version}")
     implementation("org.jetbrains.exposed:exposed-jdbc:${exposed_version}")
     implementation("com.h2database:h2:${h2_version}")
-
-    implementation("io.ktor:ktor-server-html-builder:${ktor_version}")
-    implementation("io.ktor:ktor-server-sessions:${ktor_version}")
-    implementation("io.ktor:ktor-server-auth:${ktor_version}")
 
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:${kotlin_version}")
     testImplementation("io.ktor:ktor-server-test-host")
