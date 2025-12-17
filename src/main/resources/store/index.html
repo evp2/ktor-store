@@ -6,11 +6,7 @@
     <title>Ktor Store</title>
     <script type="application/javascript">
         function fetchAndDisplayProducts() {
-            fetchTasks()
-                .then(tasks => displayProducts(tasks))
-                .finally(() => {
-                    document.getElementById('loadProducts').toggleAttribute('disabled');
-                });
+            fetchTasks().then(tasks => displayProducts(tasks));
         }
 
         function fetchTasks() {
@@ -92,8 +88,8 @@
         #authenticate {
             appearance: none;
             border: none;
-            background: white;
-            color: #0f172a; /* slate-900 */
+            background: #0f172a; /* slate-900 */
+            color: white;
             text-decoration: none;
             padding: 10px 16px;
             border-radius: 10px;
@@ -161,9 +157,6 @@
     <header>
         <h1 class="title">Ktor Store</h1>
         <div class="actions">
-            <form action="javascript:fetchAndDisplayProducts()">
-                <input id="loadProducts" type="submit" value="View Products" />
-            </form>
             <a id="authenticate" href="/login">Login</a>
         </div>
     </header>
@@ -188,5 +181,8 @@
         <span class="muted">Powered by Ktor</span>
     </footer>
 </div>
+<script type="application/javascript">
+    fetchAndDisplayProducts();
+</script>
 </body>
 </html>
